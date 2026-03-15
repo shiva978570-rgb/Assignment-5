@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ReviewPredict — Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+
+<div id="loader">
+<div class="spin"></div>
+<div class="slt">Loading dashboard…</div>
+</div>
+
+<nav>
+
+<div class="ni">
+
+<a href="{{ url_for('dashboard') }}" class="brand">
+<div class="bico">🧠</div>
+<span class="bname">ReviewPredict</span>
+</a>
+
+<ul class="nl">
+<li><a href="{{ url_for('dashboard') }}" class="act">Dashboard</a></li>
+<li><a href="{{ url_for('myreviews') }}">My Reviews</a></li>
+<li><a href="{{ url_for('about') }}">About</a></li>
+<li><a href="{{ url_for('logout') }}" class="lo">Logout</a></li>
+</ul>
+
+<div class="nright">
+
+<div class="uname">
+👤 {{ username }}
+</div>
+
+<button class="ham" id="ham" onclick="toggleMob()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
+</div>
+</div>
+</nav>
+
+
+<div class="mob-menu" id="mobMenu">
+<a href="{{ url_for('dashboard') }}">Dashboard</a>
+<a href="{{ url_for('myreviews') }}">My Reviews</a>
+<a href="{{ url_for('about') }}">About</a>
+<a href="{{ url_for('logout') }}" style="color:red">Logout</a>
+</div>
+
+
+<main>
+
+<div class="pg-head">
+<h1>Sentiment Dashboard</h1>
+<p>Analyze Flipkart reviews using NLP</p>
+</div>
+
+{% if not model_loaded %}
+<div class="demo-banner">
+Model not found (tfidf.pkl / model.pkl). Running in demo mode.
+</div>
+{% endif %}
+
+
+<div class="card">
+
+<div class="card-title">Analyze a Review</div>
+
+{% if error %}
+<div class="err-box">{{ error }}</div>
+{% endif %}
+
+
+<form method="POST" action="{{ url_for('dashboard') }}" id="aform">
+
+<div class="fgrid">
+
+<div class="fg">
+<label>Product Name</label>
+<input type="text" name="product_name" placeholder="Samsung Galaxy S24">
+</div>
+
+<div class="fg">
+<label>Category</label>
+<input type="text" name="category" placeholder="Electronics">
+</div>
+
+<div class="fg fw">
+<label>Product Review *</label>
+<textarea name="review" required placeholder="Write Flipkart review here"></textarea>
+</div>
+
+</div>
+
+<button type="submit" class="btn-pred" id="pBtn">
+<span class="bt">Predict Sentiment</span>
+</button>
+
+</form>
+
+
+{% if result %}
+
+<div class="result-box {{ result.sentiment }}">
+
+<div class="res-top">
+
+<span class="badge {{ result.sentiment }}">
+{{ result.sentiment }}
+</span>
+
+<div class="conf-wrap">
+Confidence {{ result.confidence }}%
+</div>
+
+</div>
+
+
+{% if result.sentences and result.sentences|length > 1 %}
+
+<div class="sb-label">Sentence Breakdown</div>
+
+{% for i in range(result.sentences|length) %}
+
+<div class="sent-item">
+<span class="sbadge">{{ result.sentence_preds[i] }}</span>
+<span class="stext">{{ result.sentences[i] }}</span>
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+</div>
+
+{% endif %}
+
+</div>
+
+
+<div class="sgrid">
+
+<div class="scard">
+<div class="num">{{ stats.total }}</div>
+<div class="lbl">Total Reviews</div>
+</div>
+
+<div class="scard">
+<div class="num">{{ stats.positive }}</div>
+<div class="lbl">Positive</div>
+</div>
+
+<div class="scard">
+<div class="num">{{ stats.neutral }}</div>
+<div class="lbl">Neutral</div>
+</div>
+
+<div class="scard">
+<div class="num">{{ stats.negative }}</div>
+<div class="lbl">Negative</div>
+</div>
+
+</div>
+
+
+<div class="bgrid">
+
+<div class="bcrd">
+
+<h3>Sentiment Distribution</h3>
+
+<div class="chart-wrap">
+<canvas id="myChart"></canvas>
+</div>
+
+</div>
+
+
+<div class="bcrd">
+
+<h3>Recent Analyses</h3>
+
+<div class="rev-list">
+
+{% if recent %}
+
+{% for r in recent %}
+
+<div class="ritem">
+
+<span class="rb {{ r.sentiment }}">
+{{ r.sentiment[:3] }}
+</span>
+
+<div class="rinfo">
+<div class="rp">{{ r.product }}</div>
+<div class="rt">{{ r.text }}</div>
+</div>
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<p>No reviews yet</p>
+
+{% endif %}
+
+</div>
+</div>
+
+</div>
+
+</main>
+
+
+<script>
+
+window.addEventListener("load",function(){
+
+var loader=document.getElementById("loader");
+
+if(loader){
+setTimeout(function(){
+loader.style.display="none";
+},400);
+}
+
+});
+
+
+function toggleMob(){
+
+var ham=document.getElementById("ham");
+var menu=document.getElementById("mobMenu");
+
+if(ham) ham.classList.toggle("open");
+if(menu) menu.classList.toggle("open");
+
+}
+
+
+var form=document.getElementById("aform");
+
+if(form){
+
+form.addEventListener("submit",function(){
+
+var btn=document.getElementById("pBtn");
+
+if(btn){
+btn.disabled=true;
+}
+
+});
+
+}
+
+
+var chartCanvas=document.getElementById("myChart");
+
+if(chartCanvas){
+
+var ctx=chartCanvas.getContext("2d");
+
+new Chart(ctx,{
+type:"doughnut",
+data:{
+labels:["Positive","Neutral","Negative"],
+datasets:[{
+data:[
+{{ stats.positive}},
+{{ stats.neutral }},
+{{ stats.negative }}
+],
+backgroundColor:["#22c55e","#94a3b8","#ef4444"]
+}]
+},
+options:{
+cutout:"65%"
+}
+});
+
+}
+
+</script>
+
+</body>
+</html>

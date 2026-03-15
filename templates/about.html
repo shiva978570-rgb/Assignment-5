@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReviewPredict — About</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./static/css/about.css">
+</head>
+<body>
+
+<div id="loader"><div class="spin"></div></div>
+
+<nav>
+  <div class="ni">
+    <a href="{{ url_for('dashboard') }}" class="brand">
+      <div class="bico">🧠</div>
+      <span class="bname">ReviewPredict</span>
+    </a>
+    <ul class="nl">
+      <li><a href="{{ url_for('dashboard') }}">🏠 Dashboard</a></li>
+      <li><a href="{{ url_for('myreviews') }}">📋 My Reviews</a></li>
+      <li><a href="{{ url_for('about') }}" class="act">ℹ️ About</a></li>
+      {% if username %}
+      <li><a href="{{ url_for('logout') }}" class="lo">🚪 Logout</a></li>
+      {% endif %}
+    </ul>
+    <div class="nright">
+      {% if username %}<div class="uname">👤 {{ username }}</div>{% endif %}
+      <button class="ham" id="ham" onclick="toggleMob()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="{{ url_for('dashboard') }}">🏠 Dashboard</a>
+  <a href="{{ url_for('myreviews') }}">📋 My Reviews</a>
+  <a href="{{ url_for('about') }}">ℹ️ About</a>
+  {% if username %}<a href="{{ url_for('logout') }}" style="color:var(--red)">🚪 Logout</a>{% endif %}
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hgrid"></div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="hero-inner">
+    <div class="htag"><div class="hdot"></div> Data Science Project · 2026</div>
+    <h1>The mind behind<br><span>ReviewPredict</span></h1>
+    <p>An advanced NLP-powered Flipkart review sentiment analyzer featuring negation handling, emoji recognition, lemmatization, and sentence-level majority voting.</p>
+    <div class="hbtns">
+      <a href="#developer" class="btn-w">👋 About Me</a>
+      <a href="#pipeline" class="btn-o">⚙️ NLP Pipeline</a>
+    </div>
+  </div>
+</div>
+
+<!-- DEVELOPER -->
+<section id="developer">
+  <div class="dev-grid rev">
+    <div class="dev-left">
+      <div class="av-wrap">
+        <div class="av-ring"></div>
+        <div class="av-inner">👨‍💻</div>
+      </div>
+      <div class="dev-info-pills">
+        <div class="dpill"><span class="di">🎓</span><div><span class="dl">Degree</span>B.Tech — Computer Science Engineering</div></div>
+        <div class="dpill"><span class="di">📅</span><div><span class="dl">Year</span>2nd Year Student</div></div>
+        <div class="dpill"><span class="di">📊</span><div><span class="dl">Course</span>Data Science</div></div>
+        <div class="dpill"><span class="di">✉️</span><div><span class="dl">Email</span>panchalji9705@gmail.com</div></div>
+        <div class="dpill"><span class="di">📞</span><div><span class="dl">Phone</span>+91 77422 03252</div></div>
+      </div>
+    </div>
+    <div class="dev-right">
+      <div class="sec-tag">The Developer</div>
+      <h2>Anmol Panchal</h2>
+      <p class="role">CS Undergraduate · NLP & Data Science Enthusiast</p>
+      <p>Hi! I'm <strong>Anmol</strong>, a 2nd-year B.Tech Computer Science student passionate about <strong>Natural Language Processing, Machine Learning, and building AI-powered applications</strong> that are actually useful.</p>
+      <p>ReviewPredict started as a Data Science course assignment and evolved into a deep exploration of advanced NLP — from basic TF-IDF to <strong>negation handling, emoji-to-text mapping, WordNet lemmatization</strong>, and <strong>sentence-level voting</strong> for nuanced predictions.</p>
+      <p>I believe great data science projects should be <strong>accurate, beautiful, and easy to use</strong> — not just buried in a Jupyter notebook.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section style="padding-top: 0">
+  <div class="rev">
+    <div class="sec-tag">Project Highlights</div>
+    <h2 class="sec-title">What makes this different?</h2>
+    <p class="sec-sub">Beyond basic bag-of-words — this analyzer uses a full multi-step NLP pipeline.</p>
+    <div class="feat-grid">
+      <div class="fc rev"><div class="fi">🔄</div><h3>Negation Handling</h3><p>"not good" → "not_good". Negation tokens are fused with the next word so the model understands reversed sentiment correctly.</p></div>
+      <div class="fc rev"><div class="fi">😍</div><h3>Emoji Recognition</h3><p>Emojis mapped to words before cleaning (😍→love, 😡→angry), preserving emotional signals that text-only models miss.</p></div>
+      <div class="fc rev"><div class="fi">📝</div><h3>Sentence-Level Voting</h3><p>Each sentence is predicted independently. Final result = majority vote using Counter(). Perfect for mixed reviews.</p></div>
+      <div class="fc rev"><div class="fi">🌱</div><h3>Lemmatization</h3><p>WordNet lemmatizer reduces words to base forms (running→run) for better vocabulary generalization.</p></div>
+      <div class="fc rev"><div class="fi">📊</div><h3>Confidence Score</h3><p>Every prediction shows a confidence percentage from predict_proba() so you know how sure the model is.</p></div>
+      <div class="fc rev"><div class="fi">🌐</div><h3>Full Web App</h3><p>Login, dashboard, review history with filters and delete, about page — complete production-ready Flask app.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<div class="pipe-section" id="pipeline">
+  <div class="pipe-inner">
+    <div class="rev">
+      <div class="sec-tag">How It Works</div>
+      <h2 class="sec-title">NLP Pipeline (6 Steps)</h2>
+      <p class="sec-sub">Every review goes through this exact pipeline before prediction — same as the training notebook.</p>
+      <div class="pipe-steps">
+        <div class="ps rev"><div class="ps-ico">😍</div><h4>Emoji Decode</h4><p>Map emojis to descriptive text words</p></div>
+        <div class="arrow">→</div>
+        <div class="ps rev"><div class="ps-ico">🧹</div><h4>Clean Text</h4><p>Remove non-alpha, lowercase, stopwords</p></div>
+        <div class="arrow">→</div>
+        <div class="ps rev"><div class="ps-ico">🔄</div><h4>Negation</h4><p>Fuse not/never with next word</p></div>
+        <div class="arrow">→</div>
+        <div class="ps rev"><div class="ps-ico">🌱</div><h4>Lemmatize</h4><p>Reduce to base word forms</p></div>
+        <div class="arrow">→</div>
+        <div class="ps rev"><div class="ps-ico">🔢</div><h4>TF-IDF</h4><p>Vectorize with bigrams</p></div>
+        <div class="arrow">→</div>
+        <div class="ps rev"><div class="ps-ico">🗳️</div><h4>Vote</h4><p>Counter majority vote</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TECH STACK -->
+<section>
+  <div class="rev">
+    <div class="sec-tag">Built With</div>
+    <h2 class="sec-title">Tech Stack</h2>
+    <p class="sec-sub">Pure Python, Flask, and scikit-learn — lightweight and fast.</p>
+    <div class="tech-pills">
+      <div class="tp">🐍 Python 3</div>
+      <div class="tp">🌶️ Flask</div>
+      <div class="tp">🔬 scikit-learn</div>
+      <div class="tp">📝 NLTK</div>
+      <div class="tp">🧠 Naive Bayes / Logistic Regression</div>
+      <div class="tp">🔢 TF-IDF Vectorizer</div>
+      <div class="tp">🌱 WordNet Lemmatizer</div>
+      <div class="tp">🔄 Negation Handling</div>
+      <div class="tp">😍 Emoji Mapping</div>
+      <div class="tp">🌐 HTML5 + CSS3</div>
+      <div class="tp">⚡ Vanilla JavaScript</div>
+      <div class="tp">📊 Chart.js</div>
+      <div class="tp">🐼 Pandas + NumPy</div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section style="padding-top:0" id="timeline">
+  <div class="rev">
+    <div class="sec-tag">Development Journey</div>
+    <h2 class="sec-title">How It Was Built</h2>
+    <div class="tl">
+      <div class="tli rev"><div class="tdot">📁</div><div class="tc"><span>Phase 1</span><h4>Dataset Exploration</h4><p>Loaded 309,296 Flipkart reviews (CSV, latin1 encoding). Checked nulls, duplicates, rating distribution.</p></div></div>
+      <div class="tli rev"><div class="tdot">🧹</div><div class="tc"><span>Phase 2</span><h4>Advanced Preprocessing</h4><p>Built full NLP pipeline: emoji replacement → clean_text() → handle_negation() → lemmatize_text().</p></div></div>
+      <div class="tli rev"><div class="tdot">🏷️</div><div class="tc"><span>Phase 3</span><h4>Sentiment Labelling</h4><p>Rate ≥ 4 → Positive, Rate = 3 → Neutral, Rate ≤ 2 → Negative. Filtered out 'unknown' labels.</p></div></div>
+      <div class="tli rev"><div class="tdot">🔢</div><div class="tc"><span>Phase 4</span><h4>TF-IDF + Model Training</h4><p>TF-IDF with 5000 max features and bigrams. Trained Naive Bayes and Logistic Regression. Evaluated with classification report.</p></div></div>
+      <div class="tli rev"><div class="tdot">🗳️</div><div class="tc"><span>Phase 5</span><h4>Sentence-Level Voting</h4><p>predict_review() tokenizes into sentences, predicts each separately, uses Counter().most_common(1) for final vote.</p></div></div>
+      <div class="tli rev"><div class="tdot">🌐</div><div class="tc"><span>Phase 6</span><h4>Flask Web Application</h4><p>Complete 4-page app: login, dashboard (with sentence breakdown), My Reviews (with filters), About page.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section style="padding-top:0" id="contact">
+  <div class="rev">
+    <div class="sec-tag">Get In Touch</div>
+    <h2 class="sec-title">Contact Anmol</h2>
+    <div class="contact-grid">
+      <a href="mailto:panchalji9705@gmail.com" class="cc"><div class="cc-ico">📧</div><div><h4>Email</h4><p>panchalji9705@gmail.com</p></div></a>
+      <a href="tel:+917742203252" class="cc"><div class="cc-ico">📞</div><div><h4>Phone</h4><p>+91 77422 03252</p></div></a>
+      <div class="cc"><div class="cc-ico">🎓</div><div><h4>Branch</h4><p>B.Tech — Computer Science Engineering</p></div></div>
+      <div class="cc"><div class="cc-ico">📚</div><div><h4>Course &amp; Year</h4><p>Data Science · 2nd Year</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi2">
+    <div class="fbrand">
+      <div class="fbrand-ico">🧠</div>
+      <span class="fbrand-name">ReviewPredict</span>
+    </div>
+    <p>Built with ❤️ by <strong>Shivam Yogi</strong> · B.Tech CSE, 2nd Year<br>
+    Data Science Course Project · <a href="mailto:yogishivam2003@gmail.com">yogishivam2003@gmail.com</a></p>
+  </div>
+</footer>
+
+<script src="./static/js/about.js"></script>
+</body>
+</html>

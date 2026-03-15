@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ReviewPredict — Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+
+<div id="loader">
+    <div class="spin"></div>
+</div>
+
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+
+<div class="card" id="card">
+
+<!-- LEFT PANEL -->
+<div class="lp">
+
+<div class="brand">
+<div class="brand-ico">🧠</div>
+
+<div>
+<div class="brand-name">ReviewPredict</div>
+<div class="brand-sub">Flipkart AI Analyzer</div>
+</div>
+
+</div>
+
+<div class="hero">
+<h2>Understand every review, instantly.</h2>
+
+<p>
+Advanced NLP with negation handling, emoji recognition and
+sentence-level voting for accurate Flipkart sentiment analysis.
+</p>
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<div class="n">NLP</div>
+<div class="l">Pipeline</div>
+</div>
+
+<div class="stat">
+<div class="n">3</div>
+<div class="l">Sentiments</div>
+</div>
+
+<div class="stat">
+<div class="n">300K+</div>
+<div class="l">Data Points</div>
+</div>
+
+</div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="rp">
+
+<div class="badge">
+<div class="pdot"></div>
+🔐 Secure Login
+</div>
+
+<div class="fh">
+<h2>Welcome Back!</h2>
+<p>Sign in to your ReviewPredict account</p>
+</div>
+
+{% if error %}
+<div class="alert-err">
+⚠️ {{ error }}
+</div>
+{% endif %}
+
+<form method="POST" action="{{ url_for('login') }}" id="lf">
+
+<div class="fg">
+
+<label class="fl">Username</label>
+
+<div class="iw">
+<span class="ii">👤</span>
+
+<input
+class="fi"
+type="text"
+name="username"
+placeholder="Enter your username"
+required
+>
+</div>
+
+</div>
+
+<div class="fg">
+
+<label class="fl">Password</label>
+
+<div class="iw">
+
+<span class="ii">🔒</span>
+
+<input
+class="fi"
+type="password"
+name="password"
+placeholder="Enter your password"
+required
+>
+
+<button type="button" class="pt" id="pBtn">👁</button>
+
+</div>
+
+</div>
+
+<div class="opts">
+
+<label class="rm">
+
+<input type="checkbox" name="remember">
+
+<span class="chk">✓</span>
+
+Remember me
+
+</label>
+
+</div>
+
+<button type="submit" class="btn">
+
+<span class="blt">Sign In →</span>
+
+<div class="bsp"></div>
+
+</button>
+
+</form>
+
+</div>
+</div>
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+</body>
+</html>
